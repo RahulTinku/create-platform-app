@@ -42,8 +42,10 @@ export const TEMPLATES: Template[] = [
   {
     id: "node-api",
     label: "Node.js API (Fastify)",
-    hint: "REST + OpenAPI — coming soon",
+    hint: "REST, OpenAPI/Swagger UI, CORS, Helmet, GitHub Actions CI",
     dir: path.join(TEMPLATES_ROOT, "node-api"),
-    features: [],
+    features: [
+      { id: "docker", label: "Dockerfile", hint: "Multi-stage Docker build" },
+    ],
   },
 ];
