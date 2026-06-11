@@ -33,9 +33,11 @@ export const TEMPLATES: Template[] = [
   {
     id: "react-next",
     label: "Next.js 15 (App Router)",
-    hint: "SSR, Auth.js, OpenFeature — coming soon",
+    hint: "Auth.js (GitHub OAuth), OpenFeature flags, GitHub Actions CI",
     dir: path.join(TEMPLATES_ROOT, "react-next"),
-    features: [],
+    features: [
+      { id: "vercel", label: "Vercel deploy config", hint: "vercel.json + deployment docs" },
+    ],
   },
   {
     id: "node-api",
