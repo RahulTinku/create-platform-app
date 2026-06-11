@@ -1,46 +1,110 @@
 # create-platform-app
 
-> Scaffold enterprise-grade React/Next.js apps with platform patterns in under a minute.
+> Scaffold production-ready React/Next.js/Node.js apps with enterprise patterns in under a minute.
 
 ```bash
 npx create-platform-app my-app
 ```
 
-## Status
-🚧 Work in progress
+## Templates
 
-## What it does
-
-An interactive CLI that scaffolds production-ready applications with enterprise patterns baked in from day one — the patterns most teams spend weeks wiring up manually.
-
-**Choose your stack:**
-- Next.js 15 (App Router)
-- React + Vite
-- Node.js API (Fastify)
-
-**Choose your features:**
-- 🔐 Auth (Auth.js / SSO-ready)
-- 🚩 Feature flags (OpenFeature-compliant)
-- 📊 Telemetry & logging
-- 🔄 CI/CD (GitHub Actions)
-- 🎨 Design system stub (Storybook-ready)
-- 📏 Lint + format (ESLint, Prettier, Husky)
+| Template | What's included |
+|----------|----------------|
+| **React + Vite** | React 19, TypeScript strict, ESLint, Vite 6 |
+| **Next.js 15 (App Router)** | Auth.js v5 (GitHub OAuth, JWT), OpenFeature flags, GitHub Actions CI |
+| **Node.js API (Fastify)** | Fastify 5, OpenAPI/Swagger UI, CORS, Helmet, GitHub Actions CI |
 
 ## Why
 
-`create-t3-app` gives you type-safety. This gives you **platform patterns** — the architectural decisions that a platform engineering team would make for a production app serving thousands of users.
+`create-t3-app` gives you type-safety. This gives you **platform patterns** — the architectural decisions a platform engineering team makes for a production app:
 
-## Install
+- **Auth** wired from day one (no weekend spent reading Auth.js docs)
+- **Feature flags** via OpenFeature — provider-agnostic, swap your backend later
+- **OpenAPI spec auto-generated** from route schemas — no manual documentation
+- **CI/CD** included — push and your first build runs
+
+## Usage
 
 ```bash
-# Coming soon
-npm install -g create-platform-app
+# Run directly (no install needed)
+npx create-platform-app my-app
+
+# Or pass the project name as an argument to skip the first prompt
+npx create-platform-app my-app
 ```
+
+The CLI will ask:
+1. **Template** — React + Vite / Next.js 15 / Node.js API
+2. **Features** — template-specific extras (Vercel config, Dockerfile)
+3. **Git init** — initialise a git repository
+4. **Install deps** — run `npm install` automatically
+
+## Templates in depth
+
+### React + Vite
+```
+src/
+├── main.tsx
+└── App.tsx
+```
+Minimal and clean. TypeScript strict mode, ESLint configured. Start here if you're building a SPA.
+
+### Next.js 15 (App Router)
+```
+src/
+├── app/
+│   ├── page.tsx              — force-dynamic (safe with auth())
+│   ├── layout.tsx
+│   ├── auth/sign-in|out/     — Server Action forms
+│   └── api/auth/[...nextauth] — Auth.js handler
+├── auth.ts                   — NextAuth v5-beta: GitHub OAuth, JWT
+├── components/
+│   ├── providers.tsx         — OpenFeatureProvider
+│   └── home-content.tsx      — useBooleanFlagValue hook usage
+└── lib/flags.ts              — typed flag definitions, InMemoryProvider
+```
+
+**Auth setup** — after scaffolding:
+```bash
+cp .env.example .env.local
+# Add your AUTH_SECRET (npx auth secret) and GitHub OAuth credentials
+```
+
+**Feature flags** — defined in `src/lib/flags.ts`. Swap `InMemoryProvider` with LaunchDarkly, Flagsmith, or any OpenFeature-compliant provider.
+
+### Node.js API (Fastify)
+```
+src/
+├── index.ts          — PORT from env, host 0.0.0.0 (container-safe)
+├── server.ts         — plugin registration order: security → swagger → routes → swagger-ui
+├── plugins/
+│   ├── swagger.ts    — @fastify/swagger (before routes) + swagger-ui (after)
+│   └── security.ts   — @fastify/cors + @fastify/helmet
+└── routes/
+    ├── health.ts     — GET /health → {status, uptime, timestamp}
+    └── items.ts      — CRUD /api/v1/items with full OpenAPI schema
+```
+
+Swagger UI available at `http://localhost:3000/documentation` after `npm run dev`.
 
 ## Development
 
 ```bash
+git clone https://github.com/RahulTinku/create-platform-app
+cd create-platform-app
 npm install
 npm run build
 node dist/index.js my-test-app
 ```
+
+## Roadmap
+
+- [ ] Prettier + lint-staged + Husky pre-commit hooks
+- [ ] Next.js template: Prisma + database adapter for Auth.js
+- [ ] Node.js template: Docker multi-stage build
+- [ ] `--template` flag to skip interactive prompts (for CI/scripts)
+- [ ] Publish to npm
+
+## License
+
+MIT
