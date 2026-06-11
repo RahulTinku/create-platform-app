@@ -1,0 +1,47 @@
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Resolve templates relative to the installed package root (dist/../templates)
+const TEMPLATES_ROOT = path.resolve(__dirname, "../../templates");
+
+export interface Feature {
+  id: string;
+  label: string;
+  hint: string;
+}
+
+export interface Template {
+  id: string;
+  label: string;
+  hint: string;
+  dir: string;
+  features: Feature[];
+}
+
+export const TEMPLATES: Template[] = [
+  {
+    id: "react-vite",
+    label: "React + Vite",
+    hint: "TypeScript, ESLint, strict mode",
+    dir: path.join(TEMPLATES_ROOT, "react-vite"),
+    features: [
+      { id: "prettier", label: "Prettier", hint: "Opinionated code formatter" },
+      { id: "husky", label: "Husky + lint-staged", hint: "Pre-commit hooks" },
+    ],
+  },
+  {
+    id: "react-next",
+    label: "Next.js 15 (App Router)",
+    hint: "SSR, Auth.js, OpenFeature — coming soon",
+    dir: path.join(TEMPLATES_ROOT, "react-next"),
+    features: [],
+  },
+  {
+    id: "node-api",
+    label: "Node.js API (Fastify)",
+    hint: "REST + OpenAPI — coming soon",
+    dir: path.join(TEMPLATES_ROOT, "node-api"),
+    features: [],
+  },
+];
