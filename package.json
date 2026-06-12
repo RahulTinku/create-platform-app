@@ -28,8 +28,19 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "author": "Rahul Kumar <https://github.com/RahulTinku>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RahulTinku/create-platform-app.git"
+  },
+  "homepage": "https://github.com/RahulTinku/create-platform-app#readme",
+  "bugs": {
+    "url": "https://github.com/RahulTinku/create-platform-app/issues"
+  },
   "keywords": [
     "create-app",
+    "cli",
     "scaffolding",
     "platform-engineering",
     "react",
