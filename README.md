@@ -99,10 +99,10 @@ node dist/index.js my-test-app
 
 ## Roadmap
 
-- [ ] Prettier + lint-staged + Husky pre-commit hooks
-- [ ] Next.js template: Prisma + database adapter for Auth.js
-- [ ] Node.js template: Docker multi-stage build
-- [ ] `--template` flag to skip interactive prompts (for CI/scripts)
+- [x] Prettier + lint-staged + Husky pre-commit hooks (selectable feature, all 3 templates)
+- [x] Next.js template: Prisma + database adapter for Auth.js (selectable feature)
+- [x] Node.js template: Docker multi-stage build (selectable feature)
+- [x] `--template` flag to skip interactive prompts (for CI/scripts)
 - [x] Publish to npm — package ready, publish off VPN when ready
 
 ## License

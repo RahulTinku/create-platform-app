@@ -19,6 +19,9 @@ export interface Template {
   features: Feature[];
 }
 
+const PRETTIER_FEATURE: Feature = { id: "prettier", label: "Prettier", hint: "Opinionated code formatter" };
+const HUSKY_FEATURE: Feature = { id: "husky", label: "Husky + lint-staged", hint: "Pre-commit hooks (includes Prettier)" };
+
 export const TEMPLATES: Template[] = [
   {
     id: "react-vite",
@@ -26,8 +29,8 @@ export const TEMPLATES: Template[] = [
     hint: "TypeScript, ESLint, strict mode",
     dir: path.join(TEMPLATES_ROOT, "react-vite"),
     features: [
-      { id: "prettier", label: "Prettier", hint: "Opinionated code formatter" },
-      { id: "husky", label: "Husky + lint-staged", hint: "Pre-commit hooks" },
+      PRETTIER_FEATURE,
+      HUSKY_FEATURE,
     ],
   },
   {
@@ -36,6 +39,9 @@ export const TEMPLATES: Template[] = [
     hint: "Auth.js (GitHub OAuth), OpenFeature flags, GitHub Actions CI",
     dir: path.join(TEMPLATES_ROOT, "react-next"),
     features: [
+      PRETTIER_FEATURE,
+      HUSKY_FEATURE,
+      { id: "prisma-auth", label: "Prisma + DB sessions", hint: "SQLite by default, swap to Postgres/MySQL" },
       { id: "vercel", label: "Vercel deploy config", hint: "vercel.json + deployment docs" },
     ],
   },
@@ -45,6 +51,8 @@ export const TEMPLATES: Template[] = [
     hint: "REST, OpenAPI/Swagger UI, CORS, Helmet, GitHub Actions CI",
     dir: path.join(TEMPLATES_ROOT, "node-api"),
     features: [
+      PRETTIER_FEATURE,
+      HUSKY_FEATURE,
       { id: "docker", label: "Dockerfile", hint: "Multi-stage Docker build" },
     ],
   },

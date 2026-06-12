@@ -1,5 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Recursively copy a template directory to a destination.
@@ -62,6 +65,89 @@ export function checkDestination(destDir: string): { ok: boolean; reason?: strin
     return { ok: false, reason: `Directory already exists and is not empty: ${destDir}` };
   }
   return { ok: true };
+}
+
+// ─── Feature application ──────────────────────────────────────────────────────
+
+function deepMerge(
+  target: Record<string, unknown>,
+  source: Record<string, unknown>
+): Record<string, unknown> {
+  const result: Record<string, unknown> = { ...target };
+  for (const [key, val] of Object.entries(source)) {
+    if (
+      val !== null &&
+      typeof val === "object" &&
+      !Array.isArray(val) &&
+      typeof result[key] === "object" &&
+      result[key] !== null &&
+      !Array.isArray(result[key])
+    ) {
+      result[key] = deepMerge(
+        result[key] as Record<string, unknown>,
+        val as Record<string, unknown>
+      );
+    } else {
+      result[key] = val;
+    }
+  }
+  return result;
+}
+
+async function mergePackageJson(destDir: string, patchPath: string): Promise<void> {
+  const pkgPath = path.join(destDir, "package.json");
+  if (!fs.existsSync(pkgPath) || !fs.existsSync(patchPath)) return;
+
+  const current = JSON.parse(
+    await fs.promises.readFile(pkgPath, "utf-8")
+  ) as Record<string, unknown>;
+  const patch = JSON.parse(
+    await fs.promises.readFile(patchPath, "utf-8")
+  ) as Record<string, unknown>;
+
+  const merged = deepMerge(current, patch);
+
+  // Keep deps sorted alphabetically
+  for (const field of ["dependencies", "devDependencies"] as const) {
+    if (merged[field] && typeof merged[field] === "object") {
+      merged[field] = Object.fromEntries(
+        Object.entries(merged[field] as Record<string, string>).sort(([a], [b]) =>
+          a.localeCompare(b)
+        )
+      );
+    }
+  }
+
+  await fs.promises.writeFile(pkgPath, JSON.stringify(merged, null, 2) + "\n", "utf-8");
+}
+
+/**
+ * Apply selected features to a scaffolded project.
+ * Each feature in templates/features/<id>/ may contain:
+ *   files/             → copied into the project root (overwrites base files)
+ *   package.patch.json → deep-merged into the project's package.json
+ */
+export async function applyFeatures(
+  destDir: string,
+  features: string[],
+  tokens: Record<string, string>
+): Promise<void> {
+  const FEATURES_ROOT = path.resolve(__dirname, "../../templates/features");
+
+  for (const featureId of features) {
+    const featureDir = path.join(FEATURES_ROOT, featureId);
+    if (!fs.existsSync(featureDir)) continue;
+
+    const filesDir = path.join(featureDir, "files");
+    if (fs.existsSync(filesDir)) {
+      await copyDir(filesDir, destDir, tokens);
+    }
+
+    const patchFile = path.join(featureDir, "package.patch.json");
+    if (fs.existsSync(patchFile)) {
+      await mergePackageJson(destDir, patchFile);
+    }
+  }
 }
 
 /** Run git init + initial commit in the scaffolded directory */
