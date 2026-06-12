@@ -3,6 +3,6 @@ dist/
 *.js.map
 .env
 .DS_Store
-# Lock file contains internal registry URLs when installed on Walmart network
+# Lock file omitted — avoids pinning registry URLs that may differ per environment
 package-lock.json
 AGENTS.md
