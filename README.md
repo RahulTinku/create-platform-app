@@ -103,7 +103,7 @@ node dist/index.js my-test-app
 - [ ] Next.js template: Prisma + database adapter for Auth.js
 - [ ] Node.js template: Docker multi-stage build
 - [ ] `--template` flag to skip interactive prompts (for CI/scripts)
-- [ ] Publish to npm
+- [x] Publish to npm — package ready, publish off VPN when ready
 
 ## License
 
