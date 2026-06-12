@@ -1,11 +1,11 @@
 {
-  "name": "create-platform-app",
+  "name": "platform-app-cli",
   "version": "0.1.0",
   "description": "Scaffold enterprise-grade React/Next.js apps with platform patterns in under a minute",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "create-platform-app": "./dist/index.js"
+    "platform-app-cli": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",

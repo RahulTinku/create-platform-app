@@ -1,9 +1,9 @@
-# create-platform-app
+# platform-app-cli
 
 > Scaffold production-ready React/Next.js/Node.js apps with enterprise patterns in under a minute.
 
 ```bash
-npx create-platform-app my-app
+npx platform-app-cli my-app
 ```
 
 ## Templates
@@ -27,10 +27,10 @@ npx create-platform-app my-app
 
 ```bash
 # Run directly (no install needed)
-npx create-platform-app my-app
+npx platform-app-cli my-app
 
 # Or pass the project name as an argument to skip the first prompt
-npx create-platform-app my-app
+npx platform-app-cli my-app
 ```
 
 The CLI will ask:
@@ -90,8 +90,8 @@ Swagger UI available at `http://localhost:3000/documentation` after `npm run dev
 ## Development
 
 ```bash
-git clone https://github.com/RahulTinku/create-platform-app
-cd create-platform-app
+git clone https://github.com/RahulTinku/platform-app-cli
+cd platform-app-cli
 npm install
 npm run build
 node dist/index.js my-test-app
